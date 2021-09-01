@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group 'by.rockka'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.20', 'org.mapstruct:mapstruct:1.5.0.Beta1'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20', 'org.mapstruct:mapstruct-processor:1.5.0.Beta1'
+    implementation 'org.jsoup:jsoup:1.14.2'
+
+    implementation 'org.seleniumhq.selenium:selenium-java:4.0.0-beta-4'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.20'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Main-Class': 'Main'
+        )
+    }
+}
