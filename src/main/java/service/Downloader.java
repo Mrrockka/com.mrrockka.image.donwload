@@ -1,5 +1,7 @@
 package service;
 
+import me.tongfei.progressbar.ProgressBar;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +19,7 @@ public class Downloader {
 
     public static void download(Set<URL> urls, String path) throws IOException {
         Files.createDirectories(Paths.get(path));
+        ProgressBar bar = new ProgressBar("Img donwloads", urls.size()).start();
         urls.forEach(img -> {
             try (ReadableByteChannel fileInput = Channels.newChannel(img.openStream())) {
                 Matcher matcher = IMG_PATTERN.matcher(img.getPath());
@@ -24,7 +27,10 @@ public class Downloader {
                 fileChannel.transferFrom(fileInput, 0, Long.MAX_VALUE);
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                bar.step();
             }
         });
+        bar.stop();
     }
 }
